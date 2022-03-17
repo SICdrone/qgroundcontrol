@@ -115,61 +115,51 @@ Item {
         // }
     // }
 
-    Rectangle {
-        id:                 buttonTest
-        color:             qgcPal.windowShadeDark
-        height:            ScreenTools.defaultFontPixelWidth * 40      
-        width:             ScreenTools.defaultFontPixelHeight * 25
-        anchors {
-            right:       parent.right
-            bottom:     parent.bottom
-            margins:    _toolsMargin
-        }
-        QGCListView {
-            id:                 editorListView
-            anchors.leftMargin: ScreenTools.defaultFontPixelWidth
-            anchors.left:       _searchFilter ? parent.left : groupScroll.right
-            anchors.right:      parent.right
-            anchors.top:        header.bottom
-            anchors.bottom:     parent.bottom
-            orientation:        ListView.Vertical
-            model:              controller.parameters
-            cacheBuffer:        height > 0 ? height * 2 : 0
-            clip:               true
+    // Rectangle {
+    //     id:                 buttonTest
+    //     color:             qgcPal.windowShadeDark
+    //     height:            ScreenTools.defaultFontPixelWidth * 40      
+    //     width:             ScreenTools.defaultFontPixelHeight * 25
+    //     anchors {
+    //         right:       parent.right
+    //         bottom:     parent.bottom
+    //         margins:    _toolsMargin
+    //     }
+    //     QGCListView {
+    //         id:                 editorListView
+    //         anchors.leftMargin: ScreenTools.defaultFontPixelWidth
+    //         anchors.left:       _searchFilter ? parent.left : groupScroll.right
+    //         anchors.right:      parent.right
+    //         anchors.top:        header.bottom
+    //         anchors.bottom:     parent.bottom
+    //         orientation:        ListView.Vertical
+    //         model:              controller.parameters
+    //         cacheBuffer:        height > 0 ? height * 2 : 0
+    //         clip:               true
 
-            delegate: Rectangle {
-                height: _rowHeight
-                width:  _rowWidth
-                color:  qgcPal.windowShadeDark
+    //         delegate: Rectangle {
+    //             height: _rowHeight
+    //             width:  _rowWidth
+    //             color:  qgcPal.windowShadeDark
 
-                Row {
-                    id:     factRow
-                    spacing: Math.ceil(ScreenTools.defaultFontPixelWidth * 0.5)
-                    anchors.verticalCenter: parent.verticalCenter
+    //             Row {
+    //                 id:     factRow
+    //                 spacing: Math.ceil(ScreenTools.defaultFontPixelWidth * 0.5)
+    //                 anchors.verticalCenter: parent.verticalCenter
 
-                    property Fact modelFact: object
+    //                 property Fact modelFact: object
 
-                    QGCLabel {
-                        id:     nameLabel
-                        width:  ScreenTools.defaultFontPixelWidth  * 20
-                        text:   factRow.modelFact.name
-                        clip:   true
+    //                 QGCLabel {
+    //                     id:     nameLabel
+    //                     width:  ScreenTools.defaultFontPixelWidth  * 20
+    //                     text:   factRow.modelFact.name
+    //                     clip:   true
 
-                    }
-                }
-            }
-        }
-        QGCButton {
-            text: qsTr("poop")
-            onClicked: {
-                if(ScreenTools.isMobile) {
-                    Qt.inputMethod.hide();
-                }
-                clearTimer.start()
-            }
-            anchors.verticalCenter: parent.verticalCenter
-        }
-    }
+    //                 }
+    //             }
+    //         }
+    //     }
+    // }
     Rectangle {
         // id:     sicRectangle
         // color: "#19d4d4d4"
@@ -191,11 +181,6 @@ Item {
 
             Column {
                 id:                speedView  
-                // anchors {
-                //     right:              parent.right           
-                //     // margins:            _toolsMargin
-                //     verticalCenter:     parent.verticalCenter            
-                // }
                 height:            ScreenTools.defaultFontPixelWidth * 40
                 
                 width:             ScreenTools.defaultFontPixelHeight * 10
@@ -213,7 +198,6 @@ Item {
                     font.pointSize:         ScreenTools.mediumFontPointSize / 2
                     font.bold:              true
                     y:                      50
-                    // anchors.horizontalCenter:           parent.horizontalCenter
                 }
                 QGCLabel {
                     id:                     speedStat
@@ -221,8 +205,6 @@ Item {
                     Layout.fillWidth:   true
                     color:                  qgcPal.text
                     font.pointSize:         ScreenTools.smallFontPointSize
-                    // anchors.top:            speedometerTitle.bottom
-                    // anchors.horizontalCenter: parent.horizontalCenter
                 }
                 CircularGauge {
                     id:                     speedGauge
@@ -281,11 +263,13 @@ Item {
             }
             Column {
                 id:                 tiltView
+                spacing:            10
 
                 height:            ScreenTools.defaultFontPixelWidth * 40        
                 width:             ScreenTools.defaultFontPixelHeight * 6.4  
                 QGCLabel {
-                    Layout.fillWidth:   true
+                    id:                     _tiltLabel
+                    Layout.fillWidth:       true
                     text:                   "TILT VIEW"                    
                     color:                  qgcPal.text
                     font.pointSize:         ScreenTools.mediumFontPointSize / 1.5
@@ -298,10 +282,23 @@ Item {
                     color:                  qgcPal.text
                     font.pointSize:         ScreenTools.mediumFontPointSize / 2
                     font.bold:              true
-                    y:                      50
-                    
-    
                 }
+
+                QGCButton {
+                    id:   _tiltEnabledButton
+                    text: qsTr("Disabled")
+                    onClicked: {
+                        if(ScreenTools.isMobile) {
+                            Qt.inputMethod.hide();
+                        }
+                        if(_tiltEnabledButton.text == "Disabled") {
+                            _tiltEnabledButton.text = "Enabled"
+                        }
+                        else {
+                            _tiltEnabledButton.text = "Disabled"
+                        }
+                    }
+                }                
                 QGCLabel {
                     id:                     rightTiltTitle
                     text:                   "TILT MODE"
@@ -309,18 +306,43 @@ Item {
                     color:                  qgcPal.text
                     font.pointSize:         ScreenTools.mediumFontPointSize / 2
                     font.bold:              true
-                    // anchors.top:            leftTiltStat.bottom 
-                    
-                    // anchors.horizontalCenter:           parent.horizontalCenter
+                   
                 }
+                QGCButton {
+                    id:   _tiltModeButton
+                    text: qsTr("Disabled")
+                    onClicked: {
+                        if(ScreenTools.isMobile) {
+                            Qt.inputMethod.hide();
+                        }
+                        if(_tiltEnabledButton.text == "Enabled") {
+                            _tiltEnabledButton.text = "Enabled"
+                        }
+                        else {
+                            _tiltEnabledButton.text = "Disabled"
+                        }
+                    }
+                    // anchors.verticalCenter: parent.verticalCenter
+                } 
+                QGCLabel {
+                    id:                     _tiltChannelTitle
+                    text:                   "TILT CHANNEL"
+                    Layout.fillWidth:       true
+                    color:                  qgcPal.text
+                    font.pointSize:         ScreenTools.mediumFontPointSize / 2
+                    font.bold:              true
+                   
+                }
+                ComboBox {
+                    id:                     _tiltChannelDropdown
+                    model:                  ["-1","1","2","3","4","5","6","7","8","9","10","11","12","13","14","15"]             
+                }    
                 QGCLabel {
                     id:                     rightTiltStat
                     // text:                   rpmGauge.value.toFixed(2) + ""
                     Layout.fillWidth:   true
                     color:                  qgcPal.text
                     font.pointSize:         ScreenTools.smallFontPointSize
-                    // anchors.top:            rightTiltTitle.bottom
-                    // anchors.horizontalCenter: parent.horizontalCenter
                 } 
             }
             Column {
@@ -328,27 +350,15 @@ Item {
                     model: _activeVehicle ? _activeVehicle.batteries : 0
 
                     Loader {
-                        // anchors.top:        parent.top
-                        // anchors.bottom:     parent.bottom
                         sourceComponent:    batteryComponent
 
                         property var battery: object
                     }
                 }
                 id:                 batteryView
-                // anchors {
-                //     left:              parent.left         
-                //     margins:            _toolsMargin
-                //     bottom:             _root.bottom       
-                // }
+
                 height:            ScreenTools.defaultFontPixelWidth * 40        
                 width:             ScreenTools.defaultFontPixelHeight * 6.4
-                // color:             qgcPal.windowShadeDark
-                // border {
-                //     color:          "#34c6eb"
-                //     width:          4
-                // } 
-            
                 QGCLabel {
                     id:                     batteryTitle
                     text:                   "Battery Level"
