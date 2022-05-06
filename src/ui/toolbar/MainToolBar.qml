@@ -22,7 +22,6 @@ import QGroundControl.Controllers           1.0
 Rectangle {
     id:     _root
     color:  qgcPal.toolbarBackground
-
     property int currentToolbar: flyViewToolbar
 
     readonly property int flyViewToolbar:   0
@@ -34,7 +33,6 @@ Rectangle {
     property color  _mainStatusBGColor: qgcPal.brandingPurple
 
     QGCPalette { id: qgcPal }
-
     /// Bottom single pixel divider
     Rectangle {
         anchors.left:   parent.left
