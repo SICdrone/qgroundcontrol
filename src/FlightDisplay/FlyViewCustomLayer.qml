@@ -56,7 +56,7 @@ Item {
 
 
     Rectangle {
-        // id:     sicRectangle
+        id:     sicRectangle
         // color: "#19d4d4d4"
         color:             qgcPal.windowShadeDark
         height:            ScreenTools.defaultFontPixelWidth * 55      
@@ -360,7 +360,7 @@ Item {
                         QGCLabel {
                             id:                     batteryTitle
                             text:                   "BATTERY LEVEL"
-                            anchors.top:            parent.top
+                            //anchors.top:            parent.top
                             color:                  qgcPal.text
                             font.pointSize:         ScreenTools.mediumFontPointSize 
                             font.bold:              true
@@ -435,5 +435,100 @@ Item {
             anchors.margins:        _toolsMargin
 
         } 
+    }
+    Rectangle {
+        id:     rtlRectangle
+        // color: "#19d4d4d4"
+        color:             qgcPal.windowShadeDark
+        height:            ScreenTools.defaultFontPixelWidth * 25      
+        width:             ScreenTools.defaultFontPixelHeight * 17
+        // width:             ScreenTools.defaultFontPixelHeight * 50
+        anchors {
+            right:       parent.right
+            bottom:     parent.bottom
+            margins:    _toolsMargin
+        }
+        border {
+            color:          "#34c6eb"
+            width:          4
+        }
+        Row {
+            id: rtlRow
+            anchors.horizontalCenter:   parent.horizontalCenter
+            height:                     50
+            QGCLabel{
+                id:   titleRTL
+                text:       "RTLVIEW"
+                color:                  qgcPal.text
+                font.bold:              true
+            }
+        } 
+        Column {
+            Repeater {
+                model: _activeVehicle ? _activeVehicle.batteries : 0
+
+                Loader {
+                    sourceComponent:    rtlComponent
+
+
+                }
+            }
+            id:                 rtlView
+            // spacing:            10
+            anchors.verticalCenter: rtlRectangle.verticalCenter
+            Component {
+                id: rtlComponent
+                ColumnLayout{
+                    anchors.verticalCenter: rtlRectangle.verticalCenter
+                    FactPanelController {
+                        id:          controller
+                        // factPanel : panel
+                    }
+                    QGCLabel {
+                        id:                     leftTiltTitle
+                        text:                   "PAYLOAD WEIGHT"
+                        Layout.fillWidth:       true
+                        color:                  qgcPal.text
+                        font.pointSize:         ScreenTools.mediumFontPointSize / 2
+                        font.bold:              true
+                    }
+
+                    FactTextField{
+                        //The -1 signals default component id
+
+                        // fact : controller.getParameterFact("SIC_PARLEL_MODE")
+
+                        fact:   controller.getParameterFact(-1, "SIC_PAYLOAD_LBS" )
+                        // indexModel: false
+                        Layout.fillWidth:   true
+                    }             
+                    QGCLabel {
+                        id:                     rightTiltTitle
+                        text:                   "BATTERY TYPE"
+                        Layout.fillWidth:       true
+                        color:                  qgcPal.text
+                        font.pointSize:         ScreenTools.mediumFontPointSize / 2
+                        font.bold:              true
+                    
+                    }
+                    FactTextField {
+                        //The -1 signals default component id. 
+
+                        fact : controller.getParameterFact(-1, "SIC_BAT_TYPE")
+                        Layout.fillWidth:   true
+                        // indexModel: false
+                    }
+                }
+            } 
+        }
+        Image {
+            source: "/res/SICLogoFull"
+            width:                  40
+            height:                 40
+            anchors.bottom:         parent.bottom
+            anchors.right:          parent.right
+            anchors.margins:        _toolsMargin
+
+        }       
     }
 }
