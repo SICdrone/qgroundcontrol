@@ -6,7 +6,7 @@
  * COPYING.md in the root of the source code directory.
  *
  ****************************************************************************/
-// Scott is here
+// Scott is here2
 import QtQuick                      2.3
 import QtQuick.Controls             1.2
 import QtQuick.Dialogs              1.2
